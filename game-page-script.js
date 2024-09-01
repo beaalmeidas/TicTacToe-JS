@@ -26,9 +26,14 @@ for (let i = 0; i < boxes.length; i++) {
             let cloneEl = el.cloneNode(true);
             this.appendChild(cloneEl);
 
-            // Registers players' moves
             if (p1Plays == p2Plays) {
                 p1Plays++;
+                
+                if (secondPlayer == 'player-vs-computer') {
+                    computerPlayer();
+                    p2Plays++;
+                }
+
             } else {
                 p2Plays++;
             }
@@ -55,6 +60,33 @@ for (let i = 0; i < buttons.length; i++) {
             gameContainer.classList.remove("hide");
         });
     });
+}
+
+
+// Generating the computer's moves
+function computerPlayer() {
+    let cloneO = o.cloneNode(true);
+    p2MovesCounter = 0;
+    boxesFilled = 0;
+
+    for (let i = 0; i < boxes.length; i++) {
+        let randomNumber = Math.floor(Math.random() * 5);
+
+        // Move only happens on that specific box if that box is empty
+        if (boxes[i].childNodes[0] == undefined) {
+            if (randomNumber <= 1) {
+                boxes[i].appendChild(cloneO);
+                p2MovesCounter++;
+                break;
+            }
+        } else {
+            boxesFilled++;
+        }
+    }
+
+    if (p2MovesCounter == 0 && boxesFilled < 9) {
+        computerPlayer();
+    }
 }
 
 
