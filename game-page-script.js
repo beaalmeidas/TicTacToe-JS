@@ -14,7 +14,7 @@ let p1Plays = 0;
 let p2Plays = 0;
 
 
-// MAIN LOGIC STRUCTURE (all the other functions are called here)
+// MAIN GAME LOGIC STRUCTURE
 // Logic: the 'for' loop iterates through the boxes, adding an eventListener for a 'click' action to each of them
     // When one of the boxes is clicked, checkTurns() is called to see which player's turn it was
     // checkTurns() returns which element should be added to the box ('x' or 'o'), and a copy of it gets appended to the box-node
@@ -35,6 +35,25 @@ for (let i = 0; i < boxes.length; i++) {
 
             checkWin();
         }
+    });
+}
+
+
+// Checks if the selected option is Player vs Player or Player vs Computer
+for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function() {
+        secondPlayer = this.getAttribute("id");
+
+        // Hiding the buttons
+        for (let j = 0; j < buttons.length; j++) {
+            buttons[j].style.display = 'none';
+        }
+
+        // Making game board show up
+        setTimeout(function () {
+            let gameContainer = document.querySelector("#hideable-items-container");
+            gameContainer.classList.remove("hide");
+        });
     });
 }
 
