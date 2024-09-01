@@ -13,6 +13,11 @@ let secondPlayer;
 let p1Plays = 0;
 let p2Plays = 0;
 
+
+// MAIN LOGIC STRUCTURE (all the other functions are called here)
+// Logic: the 'for' loop iterates through the boxes, adding an eventListener for a 'click' action to each of them
+    // When one of the boxes is clicked, checkTurns() is called to see which player's turn it was
+    // checkTurns() returns which element should be added to the box ('x' or 'o'), and a copy of it gets appended to the box-node
 for (let i = 0; i < boxes.length; i++) {
     boxes[i].addEventListener("click", function() {
         let el = checkTurns(p1Plays, p2Plays);
@@ -35,7 +40,7 @@ for (let i = 0; i < boxes.length; i++) {
 
 
 // Function to check which player is next
-// Logic: If the amount of turns is the same between the two players, it's P1's turn
+// Logic: If the amount of turns is the same between the two players, it's P1's turn; if not, it's P2's turn.
 function checkTurns(p1Plays, p2Plays) {
     if (p1Plays == p2Plays) {
         el = x;
@@ -67,9 +72,9 @@ function checkWin() {
         let b3Child = blockThree.childNodes[0].className;
 
         if (b1Child == 'x' && b2Child == 'x' && b3Child == 'x') {
-            console.log('x wins');
+            declareWinner('x');
         } else if (b1Child == 'o' && b2Child == 'o' && b3Child == 'o') {
-            console.log('o wins');
+            declareWinner('o');
         }
     }
 
@@ -80,9 +85,9 @@ function checkWin() {
         let b6Child = blockSix.childNodes[0].className;
 
         if (b4Child == 'x' && b5Child == 'x' && b6Child == 'x') {
-            console.log('x wins');
+            declareWinner('x');
         } else if (b4Child == 'o' && b5Child == 'o' && b6Child == 'o') {
-            console.log('o wins');
+            declareWinner('o');
         }
     }
 
@@ -93,9 +98,9 @@ function checkWin() {
         let b9Child = blockNine.childNodes[0].className;
 
         if (b7Child == 'x' && b8Child == 'x' && b9Child == 'x') {
-            console.log('x wins');
+            declareWinner('x');
         } else if (b7Child == 'o' && b8Child == 'o' && b9Child == 'o') {
-            console.log('o wins');
+            declareWinner('o');
         }
     }
 
@@ -108,9 +113,9 @@ function checkWin() {
         let b7Child = blockSeven.childNodes[0].className;
 
         if (b1Child == 'x' && b4Child == 'x' && b7Child == 'x') {
-            console.log('x wins');
+            declareWinner('x');
         } else if (b1Child == 'o' && b4Child == 'o' && b7Child == 'o') {
-            console.log('o wins');
+            declareWinner('o');
         }
     }
 
@@ -121,9 +126,9 @@ function checkWin() {
         let b8Child = blockEight.childNodes[0].className;
 
         if (b2Child == 'x' && b5Child == 'x' && b8Child == 'x') {
-            console.log('x wins');
+            declareWinner('x');
         } else if (b2Child == 'o' && b5Child == 'o' && b8Child == 'o') {
-            console.log('o wins');
+            declareWinner('o');
         }
     }
 
@@ -134,9 +139,9 @@ function checkWin() {
         let b9Child = blockNine.childNodes[0].className;
 
         if (b3Child == 'x' && b6Child == 'x' && b9Child == 'x') {
-            console.log('x wins');
+            declareWinner('x');
         } else if (b3Child == 'o' && b6Child == 'o' && b9Child == 'o') {
-            console.log('o wins');
+            declareWinner('o');
         }
     }
 
@@ -149,9 +154,9 @@ function checkWin() {
         let b9Child = blockNine.childNodes[0].className;
 
         if (b1Child == 'x' && b5Child == 'x' && b9Child == 'x') {
-            console.log('x wins');
+            declareWinner('x');
         } else if (b1Child == 'o' && b5Child == 'o' && b9Child == 'o') {
-            console.log('o wins');
+            declareWinner('o');
         }
     }
 
@@ -162,9 +167,9 @@ function checkWin() {
         let b7Child = blockSeven.childNodes[0].className;
 
         if (b3Child == 'x' && b5Child == 'x' && b7Child == 'x') {
-            console.log('x wins');
+            declareWinner('x');
         } else if (b3Child == 'o' && b5Child == 'o' && b7Child == 'o') {
-            console.log('o wins');
+            declareWinner('o');
         }
     }
 
@@ -180,6 +185,43 @@ function checkWin() {
     }
 
     if (moveCounter == 9) {
-        console.log("it's a tie");
+        declareWinner();
+    }
+}
+
+
+// Function to show a message with the winner, update the scoreboard and clear the game board
+function declareWinner(winner) {
+    let scoreboardX = document.querySelector("#x-points");
+    let scoreboardO = document.querySelector("#o-points");
+    let endMessage = '';
+
+    // Updating the points on the scoreboard
+    if (winner == 'x') {
+        scoreboardX.textContent = parseInt(scoreboardX.textContent) + 1;
+        endMessage = "Player 1 (X) wins!";
+    } else if (winner == 'o') {
+        scoreboardO.textContent = parseInt(scoreboardO.textContent) + 1;
+        endMessage = "Player 2 (O) wins!";
+    } else {
+        // add ties counter here
+        endMessage = "It's a tie!";
+    }
+
+    // Shows end message on the screen
+    // 'hide' class is dinamically removed when the game ends to the messages can be shown
+    // After 3 seconds, 'hide' is added to the message again
+    messageText.innerHTML = endMessage;
+    messageContainer.classList.remove("hide");
+    setTimeout(function() {
+        messageContainer.classList.add("hide");
+    }, 3000);
+
+    // Clearing the board
+    p1Plays = 0;
+    p2Plays = 0;
+    let boxesToRemove = document.querySelectorAll(".box div");
+    for (let i = 0; i < boxesToRemove.length; i++) {
+        boxesToRemove[i].parentNode.removeChild(boxesToRemove[i]);
     }
 }
