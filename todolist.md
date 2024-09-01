@@ -1,3 +1,1 @@
-- declareWinner() function
 - add tie-tracking to the scoreboard
-- add comments to the html
